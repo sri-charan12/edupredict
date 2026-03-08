@@ -18,7 +18,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DB = os.path.join(BASE_DIR, "students.db")
 
 def get_db():
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(DB, timeout=30, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -272,7 +272,7 @@ def register():
         elif len(pw) < 6: error = "Password must be at least 6 characters."
         else:
             try:
-                conn = sqlite3.connect(DB)
+                conn = sqlite3.connect(DB, timeout=30, check_same_thread=False)
                 conn.row_factory = sqlite3.Row
                 conn.execute(
                     "INSERT INTO users (firstname,lastname,email,username,password,role) VALUES (?,?,?,?,?,?)",
@@ -550,4 +550,4 @@ if __name__ == "__main__":
     print("\n" + "="*50)
     print("  EduPredict → http://127.0.0.1:5000")
     print("="*50 + "\n")
-    app.run(debug=True, port=5000)
+    app.run(debug=False)
